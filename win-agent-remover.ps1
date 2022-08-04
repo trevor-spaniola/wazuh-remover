@@ -12,7 +12,9 @@ function Remove-Agent {
 		{
 			$WAZ_AGENT = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "Wazuh Agent"}
 			$WAZ_AGENT.Uninstall()
-			Remove-Item 'C:\Program Files (x86)\ossec-agent\' -Recurse
+			if(Test-path 'C:\Program Files (x86)\ossec-agent') {	
+				Remove-Item 'C:\Program Files (x86)\ossec-agent\' -Recurse
+			}
 			Write-Host "[*] Agent successfully removed!" -ForegroundColor Green
 			Exit 0
 		}
@@ -29,5 +31,6 @@ function Remove-Agent {
 }
 #
 #
-Remove-Agent
-
+if(Test-path 'C:\Program Files (x86)\ossec-agent') {
+	Remove-Agent
+}
